@@ -48,24 +48,32 @@ def get_preprocessed_meta(config, dl_output, metadata):
     phoneme_idx = F.pad(phoneme_idx, (0, phoneme_pad_length - phoneme_idx.size(0)), value=pad_token_id) if phoneme_idx.size(0) < phoneme_pad_length else phoneme_idx[:phoneme_pad_length]
     
     # load pitch and pitch sketch
-    pitch_path = metadata["pitch"] if "pitch" in metadata.keys() else os.path.join(config["preprocessing"]["preprocessed_data"]["pitch"], "{}-pitch-{}.npy".format(speaker, basename))
-    if os.path.exists(pitch_path):
-        original_pitch = np.load(pitch_path)
-        pitch = torch.from_numpy(original_pitch).float()
-        pitch_length = torch.LongTensor([min(pitch.size(0), pitch_pad_length)])
-        pitch = F.pad(pitch, (0, pitch_pad_length - pitch.size(0)), value=PITCH_MIN) if pitch.size(0) < pitch_pad_length else pitch[:pitch_pad_length]
-    else:
+    # if pitch_sketch is provided directly, skip loading pitch
+    if "pitch_sketch" in metadata.keys() and metadata["pitch_sketch"]:
         original_pitch = None
         pitch = ""
         pitch_length = ""
+    else:
+        pitch_path = metadata["pitch"] if "pitch" in metadata.keys() else os.path.join(config["preprocessing"]["preprocessed_data"]["pitch"], "{}-pitch-{}.npy".format(speaker, basename))
+        if os.path.exists(pitch_path):
+            original_pitch = np.load(pitch_path)
+            pitch = torch.from_numpy(original_pitch).float()
+            pitch_length = torch.LongTensor([min(pitch.size(0), pitch_pad_length)])
+            pitch = F.pad(pitch, (0, pitch_pad_length - pitch.size(0)), value=PITCH_MIN) if pitch.size(0) < pitch_pad_length else pitch[:pitch_pad_length]
+        else:
+            original_pitch = None
+            pitch = ""
+            pitch_length = ""
     
     if "pitch_sketch" in metadata.keys() and metadata["pitch_sketch"]:  # under inference mode
         assert original_pitch is None, "You cannot provide both pitch and pitch_sketch in the metadata"
         pitch_sketch_path = metadata["pitch_sketch"]
         pitch_sketch = np.load(pitch_sketch_path)
-        pitch_sketch = torch.from_numpy(pitch_sketch).float()[None, None, :]
-        pitch_sketch = F.interpolate(pitch_sketch, size=pitch_pad_length, mode="linear", align_corners=True).squeeze(0).squeeze(0)
+        pitch_sketch = sketch_extractor(pitch_sketch)
+        pitch_sketch = torch.from_numpy(pitch_sketch).float()
         pitch_length = torch.LongTensor([min(pitch_sketch.size(0), pitch_pad_length)])
+        pitch_sketch = F.pad(pitch_sketch, (0, pitch_pad_length - pitch_sketch.size(0)), value=0) if pitch_sketch.size(0) < pitch_pad_length else pitch_sketch[:pitch_pad_length]
+        pitch_sketch = min_max_normalize(pitch_sketch)
     elif original_pitch is not None:
         pitch_sketch = sketch_extractor(original_pitch)
         pitch_sketch = torch.from_numpy(pitch_sketch).float()
@@ -75,24 +83,32 @@ def get_preprocessed_meta(config, dl_output, metadata):
         pitch_sketch = ""
 
     # load energy and energy sketch
-    energy_path = metadata["energy"] if "energy" in metadata.keys() else os.path.join(config["preprocessing"]["preprocessed_data"]["energy"], "{}-energy-{}.npy".format(speaker, basename))
-    if os.path.exists(energy_path):
-        original_energy = np.load(energy_path)
-        energy = torch.from_numpy(original_energy).float()
-        energy_length = torch.LongTensor([min(energy.size(0), energy_pad_length)])
-        energy = F.pad(energy, (0, energy_pad_length - energy.size(0)), value=ENERGY_MIN) if energy.size(0) < energy_pad_length else energy[:energy_pad_length]
-    else:
+    # if energy_sketch is provided directly, skip loading energy
+    if "energy_sketch" in metadata.keys() and metadata["energy_sketch"]:
         original_energy = None
         energy = ""
         energy_length = ""
+    else:
+        energy_path = metadata["energy"] if "energy" in metadata.keys() else os.path.join(config["preprocessing"]["preprocessed_data"]["energy"], "{}-energy-{}.npy".format(speaker, basename))
+        if os.path.exists(energy_path):
+            original_energy = np.load(energy_path)
+            energy = torch.from_numpy(original_energy).float()
+            energy_length = torch.LongTensor([min(energy.size(0), energy_pad_length)])
+            energy = F.pad(energy, (0, energy_pad_length - energy.size(0)), value=ENERGY_MIN) if energy.size(0) < energy_pad_length else energy[:energy_pad_length]
+        else:
+            original_energy = None
+            energy = ""
+            energy_length = ""
     
     if "energy_sketch" in metadata.keys() and metadata["energy_sketch"]:  # under inference mode
         assert original_energy is None, "You cannot provide both energy and energy_sketch in the metadata"
         energy_sketch_path = metadata["energy_sketch"]
         energy_sketch = np.load(energy_sketch_path)
-        energy_sketch = torch.from_numpy(energy_sketch).float()[None, None, :]
-        energy_sketch = F.interpolate(energy_sketch, size=energy_pad_length, mode="linear", align_corners=True).squeeze(0).squeeze(0)
+        energy_sketch = sketch_extractor(energy_sketch)
+        energy_sketch = torch.from_numpy(energy_sketch).float()
         energy_length = torch.LongTensor([min(energy_sketch.size(0), energy_pad_length)])
+        energy_sketch = F.pad(energy_sketch, (0, energy_pad_length - energy_sketch.size(0)), value=0) if energy_sketch.size(0) < energy_pad_length else energy_sketch[:energy_pad_length]
+        energy_sketch = min_max_normalize(energy_sketch)
     elif original_energy is not None:
         energy_sketch = sketch_extractor(original_energy)
         energy_sketch = torch.from_numpy(energy_sketch).float()

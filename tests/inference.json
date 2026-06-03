@@ -1,0 +1,13 @@
+{
+ "data": [
+  {
+   "wav": "wavs/LJ001-0001.wav",
+   "transcription": "I didn't say you stole the money.",
+   "duration": 5.0,
+   "phonemes": "{AY1 D IH1 D AH0 N T S EY1 Y UW1 S T OW1 L DH AH0 M AH1 N IY0}"
+  }
+ ],
+ "pitch": "data/dataset/metadata/ljspeech/phoneme_level/pitch",
+ "energy": "data/dataset/metadata/ljspeech/phoneme_level/energy",
+ "duration": "data/dataset/metadata/ljspeech/phoneme_level/duration"
+}

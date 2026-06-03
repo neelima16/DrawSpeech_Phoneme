@@ -1,5 +1,5 @@
 metadata_root: "./data/dataset/metadata/dataset_root.json"
-log_directory: "./log/latent_diffusion"
+log_directory: "./log/latent_diffusion_scratch"
 project: "drawspeech"
 precision: "high"
 

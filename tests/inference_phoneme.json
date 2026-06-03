@@ -1,0 +1,13 @@
+{
+ "data": [
+  {
+   "wav": "wavs/LJ001-0001.wav",
+   "transcription": "Printing, in the only sense with which we are at present concerned, differs from most if not from all the arts and crafts represented in the Exhibition",
+   "duration": 10.03,
+   "phonemes": "{P R IH1 N T IH0 NG sp IH1 N DH IY0 OW1 N L IY0 S EH1 N S W IH1 DH sp W IH1 CH W IY1 AA1 R AE1 T P R EH1 Z AH0 N T K AH0 N S ER1 N D sp D IH1 F ER0 Z sp F R AH1 M M OW1 S T IH1 F N AA1 T F R AH1 M AO1 L DH IY0 AA1 R T S AH0 N D K R AE1 F T S R EH2 P R IH0 Z EH1 N T IH0 D IH1 N DH IY0 EH2 K S AH0 B IH1 SH AH0 N}",
+   "pitch_sketch": "data/dataset/metadata/ljspeech/phoneme_level/pitch/LJSpeech-pitch-LJ001-0001.npy",
+   "energy_sketch": "data/dataset/metadata/ljspeech/phoneme_level/energy/LJSpeech-energy-LJ001-0001.npy"
+  }
+ ],
+ "duration": "data/dataset/metadata/ljspeech/phoneme_level/duration"
+}

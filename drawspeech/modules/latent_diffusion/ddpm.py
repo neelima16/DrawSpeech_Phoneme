@@ -1132,8 +1132,7 @@ class LatentDiffusion(DDPM):
                     continue
 
                 if not self.training:
-                    if isinstance(self.cond_stage_models[self.cond_stage_model_metadata[cond_model_key]["model_idx"]], CLAPAudioEmbeddingClassifierFreev2):
-                        print("Warning: CLAP model normally should use text for evaluation")
+                    pass  # CLAP check removed
 
                 # The original data for conditioning
                 # If cond_model_key is "all", that means the conditional model need all the information from a batch

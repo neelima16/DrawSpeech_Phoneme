@@ -21,3 +21,8 @@ temp.py
 temp
 tests
 test.yaml
+logs/
+*.mp3
+data/checkpoints/
+*.zip
+*.bz2
