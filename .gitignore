@@ -26,3 +26,4 @@ logs/
 data/checkpoints/
 *.zip
 *.bz2
+data/dataset/metadata/

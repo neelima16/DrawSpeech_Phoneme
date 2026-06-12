@@ -1,0 +1,12 @@
+{
+ "data": [
+  {
+   "wav": "wavs/LJ013-0220.wav",
+   "transcription": "that Courvoisier was idle, discontented, ready to take offense, greedy of gain;",
+   "phonemes": "{DH AE1 T K UH0 R V OY1 Z IY0 ER0 W AH1 Z AY1 D AH0 L sp D IH2 S K AH0 N T EH1 N T IH0 D sp R EH1 D IY0 T IH0 T EY1 K AH0 F EH1 N S sp G R IY1 D IY0 AH0 V G EY1 N sp}",
+   "pitch_sketch": "data/dataset/metadata/ljspeech/phoneme_level/pitch/LJSpeech-pitch-LJ013-0220.npy",
+   "energy_sketch": "data/dataset/metadata/ljspeech/phoneme_level/energy/LJSpeech-energy-LJ013-0220.npy"
+  }
+ ],
+ "duration": "data/dataset/metadata/ljspeech/phoneme_level/duration"
+}
